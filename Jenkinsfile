@@ -18,7 +18,7 @@ pipeline {
 
             steps { 
 
-                git 'https://github.com/bhargavsiripurapu/Flask_Docker.git' 
+                git 'https://github.com/bhargavsiripurapu/flask_demo.git' 
 
             }
 
