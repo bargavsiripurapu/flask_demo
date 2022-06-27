@@ -1,71 +1,46 @@
-pipeline { 
+ pipeline{
 
-    environment { 
+	agent any
 
-        registry = "devopshub123/flaskdemo" 
+	environment {
+		DOCKERHUB_CREDENTIALS=credentials('docker_hub')
+	}
 
-        registryCredential = 'devopshub123' 
+	stages {
+	    
+	    stage('gitclone') {
 
-        dockerImage = 'flask_test' 
+			steps {
+				git 'https://github.com/bargavsiripurapu/flask_demo.git'
+			}
+		}
 
-    }
+		stage('Build') {
 
-    agent any 
+			steps {
+				sh 'docker build -t devopshub123/docker_flask_test:latest .'
+			}
+		}
 
-    stages { 
+		stage('Login') {
 
-        stage('Cloning our Git') { 
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
 
-            steps { 
+		stage('Push') {
 
-                git 'https://github.com/bhargavsiripurapu/flask_demo.git' 
+			steps {
+				sh 'docker push devopshub123/docker_flask_test:latest'
+			}
+		}
+	}
 
-            }
-
-        } 
-
-        stage('Building our image') { 
-
-            steps { 
-
-                script { 
-
-                    dockerImage = docker.build registry + ":latest" 
-
-                }
-
-            } 
-
-        }
-
-        stage('Deploy our image') { 
-
-            steps { 
-
-                script { 
-
-                    docker.withRegistry( '', registryCredential ) { 
-
-                        dockerImage.push() 
-
-                    }
-
-                } 
-
-            }
-
-        } 
-
-        stage('Cleaning up') { 
-
-            steps { 
-
-                sh "docker rmi flask_test:latest" 
-
-            }
-
-        } 
-
-    }
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
 
 }
