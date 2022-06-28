@@ -32,7 +32,7 @@
 		stage('Push') {
 
 			steps {
-				sh 'docker push devopshub123/docker_flask_test:latest'
+				sh 'docker push devopshub123/flask_demo:latest'
 			}
 		}
 	}
