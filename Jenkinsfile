@@ -11,7 +11,7 @@
 	    stage('gitclone') {
 
 			steps {
-				git 'https://github.com/bargavsiripurapu/flask_demo.git'
+				git branch: 'main', url: 'https://github.com/bargavsiripurapu/flask_demo.git'
 			}
 		}
 
