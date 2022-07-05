@@ -18,7 +18,7 @@
 		stage('Build') {
 
 			steps {
-				sh 'docker build -t devopshub123/flask_demo:2.0 .'
+				sh 'docker build -t devopshub123/flask_test:1.0 .'
 			}
 		}
 
@@ -32,7 +32,7 @@
 		stage('Push') {
 
 			steps {
-				sh 'docker push devopshub123/flask_demo:2.0'
+				sh 'docker push devopshub123/flask_test:1.0'
 			}
 		}
 	}
