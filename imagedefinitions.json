@@ -1,6 +1,6 @@
 [
     {
-        "name": "",
+        "name": "flaskapp-git",
         "imageUri": "519948721701.dkr.ecr.us-east-1.amazonaws.com/simpleapp-v1:latest"
     }
 ]
