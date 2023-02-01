@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  variables:
+    ECR_REPOSITORY: 519948721701.dkr.ecr.us-east-1.amazonaws.com/simpleapp-v1
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region us-east-1)
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t $ECR_REPOSITORY:latest .
+      - docker tag $ECR_REPOSITORY:latest $ECR_REPOSITORY:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Pushing Docker image to Amazon ECR...
+      - echo Build completed on `date`
+      - docker push $ECR_REPOSITORY:latest
+      - docker push $ECR_REPOSITORY:$IMAGE_TAG
